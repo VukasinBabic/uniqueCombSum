@@ -82,8 +82,6 @@ class UniqueCombSum{
 	    
 	    $uniqueCombinations = $this->getCombinations(array(1,2,4,8,16,32,64,128,256),$numOfCombinations);
 	    
-	    
-	    //var_dump('usao');die;
 	    foreach($uniqueCombinations as $val){
 	        if(array_sum($val) == $num){
 	            
@@ -95,50 +93,14 @@ class UniqueCombSum{
 	        return $this->findFilter($num, $numOfCombinations+1);
 	    }
 	    return $brandFilters;
-	}
-	
-	
-	public function getTreeXML($req)
-	{	
-	
-         $marketFilter =  $req['P_CODMARKET']; //mercato del filtro
-	     
-	    foreach($this->appsDocumentale as $app)
-	    {	    
-	        if ($app['CODCOMAPPL'] == $req['P_COMAPPLPTLAPPL'])
-	        {
-	            if (isset($_SESSION["INTERNAL_APPL"]))
-	            {
-	                foreach($_SESSION["INTERNAL_APPL"] as $key => $value)
-	                {
-	                    if (isset($value["MARKETS"]))
-	                    {
-	                        if (in_array($marketFilter, $value["MARKETS"]))
-	                        {
-	                          if ($value["APPLNAME"] == $app['APPLICATION'])
-	                          {
-	                              //in sessione ho un ruolo per l'applicazione del filtro
-	                             // echo $value["APPLNAME"] . ' - ' . $value["HIERARCHY"] . ' - ' . $value["ROLETYPE"];
-	                             $req['CODPROFILE'] = $value["HIERARCHY"];
-	                             $req['ROLETYPE'] = $value["ROLETYPE"];
-	                          } 
-	                            
-	                        }
-	                    }
-	                }
-	            }
-	        }
 	    }
-	    
-	    
-	    
-		$records = $this->DBWrapInst->getTreeData($req);
+	
+
 		$BrandMasks = [];
-		//var_dump($records);die;
+		
 		foreach($records as $recKey => $rec){
             
 		    
-		    //$BrandMasks[] = $rec["BRANDMASK"];
 		    if( $rec["NODETYPE"] == 0 && $rec["DATEINSERTED"] < date('Y-m-d', strtotime('-1 year'))){
 		        
 		        unset($records[$recKey]); 
@@ -155,8 +117,6 @@ class UniqueCombSum{
 		}
 		
 		
-		//var_dump($records);die;
-		
 		$brandMasks = ['1'=> '77', '2' => '83', '4' => '70', '8' => '00', '16' => '66', '32' => '55', '64' => '56', '128' => '57', '256' => '58'];
 				
 		$filteredAndChangedBrands = [];
@@ -169,7 +129,7 @@ class UniqueCombSum{
 		    }
 		}
 		
-		//var_dump($filteredAndChangedBrands);die;
+
 		
 		$arrayInteresction = [];
 		
@@ -180,13 +140,13 @@ class UniqueCombSum{
 		        $arrayInteresction = array_intersect($val["BRANDMASK"][0], $filteredAndChangedBrands);
 		        
 		        if(empty($arrayInteresction)){
-		            //var_dump('empty:',$key);
+	
 		            unset($records[$key]); 
 		        } 
 		    }else{ 
 		        
 		        if(!in_array($val["BRANDMASK"], $filteredAndChangedBrands)){
-		            //var_dump('KEY2:', $val["BRANDMASK"]);
+	
 		            unset($records[$key]);
 		        } 
 		    }
